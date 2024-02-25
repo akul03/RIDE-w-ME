@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+
+    defaultConfig {
+        applicationId "com.mranasspro.gpslivetracker"
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "UNSPLASH_ACCESS_KEY", unsplash_access_key)
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    //find-out dependencies in dependencies.gradle
+    implementation deps.kotlin.stdlib
+    implementation deps.androidx.core_ktx
+    implementation deps.androidx.appcompat
+    implementation deps.material
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.work_runtime
+
+    //GMS services
+    implementation deps.gms.location
+
+    //navigation
+    implementation deps.androidx.navigation.navigation_fragment
+    implementation deps.androidx.navigation.navigation_ui
+
+    //hilt
+    implementation deps.hilt.hilt_android
+    kapt deps.hilt.hilt_compiler
+
+    //Retrofit + GSON - ok2Curl
+    implementation deps.networking.retrofit
+    implementation deps.networking.logging_interceptor
+    implementation deps.networking.ok2curl
+    implementation deps.networking.retrofit_gson
+
+    //logs
+    implementation deps.timber
+
+    //paging
+    implementation deps.paging
+
+    //glide
+    implementation deps.glide.glide
+    kapt deps.glide.processor
+
+    testImplementation deps.junit
+    androidTestImplementation deps.androidx.junit
+    androidTestImplementation deps.androidx.espresso
+}
+
+kapt {
+    correctErrorTypes true
+}
